@@ -1,6 +1,6 @@
-import fs from 'fs';
-import core from "@actions/core";
-import puppeteer from "puppeteer";
+const fs = require('fs');
+const core = require('@actions/core');
+const puppeteer = require('puppeteer');
 
 (async () => {
     
@@ -10,9 +10,9 @@ import puppeteer from "puppeteer";
     console.log(`Input file: ${inputFile}`);
     console.log(`Output file: ${outputFile}`);
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
-    await page.goto(inputFile, { waitUntil: "networkidle0" });
+    await page.goto(`file://${inputFile}`, { waitUntil: "networkidle0" });
 
     const pdf = await page.pdf();
     console.log("PDF generated, writing to the file")
