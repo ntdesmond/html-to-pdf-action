@@ -1,0 +1,16 @@
+name: HTML to PDF
+description: Print HTML to PDF using puppeteer
+author: ntdesmond
+
+inputs:
+  path:
+    description: "Path to HTML file, may include query parameters if needed"
+    required: true
+
+  output:
+    description: "Output file path"
+    required: true
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
