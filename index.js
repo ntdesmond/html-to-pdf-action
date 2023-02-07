@@ -12,14 +12,21 @@ const { launch } = require('puppeteer');
     console.log(`Input file: ${inputFile}`);
     console.log(`Output file: ${outputFile}`);
 
+    console.log("Opening the browser")
     const browser = await launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
-    await page.goto(`file://${inputFile}`, { waitUntil: "networkidle0" });
+    
+    const url = `file://${inputFile}`;
+    console.log(`Navigating to ${url}`)
+    await page.goto(url, { waitUntil: "networkidle0" });
 
     const pdf = await page.pdf();
+    
     console.log("PDF generated, writing to the file")
-
     writeFileSync(outputFile, pdf);
+    
+    console.log("Closing the browser")
+    await browser.close()
 
     console.log("Done");
 })();
