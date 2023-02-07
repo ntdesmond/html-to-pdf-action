@@ -11,9 +11,15 @@ RUN groupadd $USER -g $GID && \
     mkdir /home/$USER && chown $USER:$USER /home/$USER
 USER $USER
 
-COPY --chown=$USER:$USER . /app
+# Install NPM packages
+COPY --chown=$USER:$USER ./package*.json /app/
 WORKDIR /app
-
-ENV PUPPETEER_CACHE_DIR=/home/$USER/.cache/puppeteer
 RUN npm install
+
+# Copy the script
+COPY ./index.js /app
+
+# Configure puppeteer cache
+ENV PUPPETEER_CACHE_DIR=/home/$USER/.cache/puppeteer
+
 CMD [ "node", "/app/index.js" ]
