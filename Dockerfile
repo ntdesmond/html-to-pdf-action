@@ -3,4 +3,4 @@ COPY --chown=pptruser . /app
 WORKDIR /app
 ENV npm_config_cache=/tmp/npm_cache
 RUN npm install
-CMD [ "node", "index.js" ]
+CMD [ "node", "/app/index.js" ]
