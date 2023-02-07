@@ -1,5 +1,5 @@
-name: HTML to PDF
-description: Print HTML to PDF using puppeteer
+name: html2pdf with puppeteer
+description: Convert HTML to PDF using puppeteer
 author: ntdesmond
 
 inputs:
@@ -19,3 +19,7 @@ inputs:
 runs:
   using: "docker"
   image: "Dockerfile"
+
+branding:
+  icon: file-text
+  color: red

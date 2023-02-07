@@ -1,14 +1,11 @@
 {
-  "name": "html-to-pdf-action",
-  "version": "0.1.0",
+  "name": "html2pdf-action",
+  "version": "1.0.0",
   "description": "Github action to print HTML to PDF using puppeteer",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ntdesmond/html-to-pdf-action.git"
+    "url": "git+https://github.com/ntdesmond/html2pdf-action.git"
   },
   "keywords": [
     "pdf",
@@ -19,9 +16,9 @@
   "author": "ntdesmond",
   "license": "WTFPL",
   "bugs": {
-    "url": "https://github.com/ntdesmond/html-to-pdf-action/issues"
+    "url": "https://github.com/ntdesmond/html2pdf-action/issues"
   },
-  "homepage": "https://github.com/ntdesmond/html-to-pdf-action#readme",
+  "homepage": "https://github.com/ntdesmond/html2pdf-action#readme",
   "dependencies": {
     "@actions/core": "^1.10.0"
   },

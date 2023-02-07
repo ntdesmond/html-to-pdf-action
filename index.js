@@ -11,7 +11,7 @@ const { launch } = require('puppeteer');
     const pdfOptions = JSON.parse(getInput('options'));
 
     console.log(`Input file: ${inputFile}`);
-    console.log(`Output file: ${outputFile}`);
+    console.log(`Output file: ${outputFile}\n`);
 
     console.log("Opening the browser")
     const browser = await launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
@@ -23,7 +23,7 @@ const { launch } = require('puppeteer');
 
     const pdf = await page.pdf(pdfOptions);
     
-    console.log("PDF generated, writing to the file")
+    console.log(`PDF is ready, writing to ${outputFile}`)
     writeFileSync(outputFile, pdf);
     
     console.log("Closing the browser")
