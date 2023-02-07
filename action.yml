@@ -11,6 +11,11 @@ inputs:
     description: "Output file path"
     required: true
 
+  options:
+    description: "options to page.pdf()"
+    required: false
+    default: "{}"
+
 runs:
   using: "docker"
   image: "Dockerfile"

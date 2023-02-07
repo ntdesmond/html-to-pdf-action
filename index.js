@@ -8,6 +8,7 @@ const { launch } = require('puppeteer');
     
     const inputFile = join(cwd(), getInput('path'));
     const outputFile = getInput('output');
+    const pdfOptions = JSON.parse(getInput('options'));
 
     console.log(`Input file: ${inputFile}`);
     console.log(`Output file: ${outputFile}`);
@@ -20,7 +21,7 @@ const { launch } = require('puppeteer');
     console.log(`Navigating to ${url}`)
     await page.goto(url, { waitUntil: "networkidle0" });
 
-    const pdf = await page.pdf();
+    const pdf = await page.pdf(pdfOptions);
     
     console.log("PDF generated, writing to the file")
     writeFileSync(outputFile, pdf);
