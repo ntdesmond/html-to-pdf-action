@@ -1,17 +1,21 @@
-const { writeFileSync } = require('fs');
+const { promises: { mkdir, writeFile } } = require('fs');
 const { cwd } = require('process');
-const { join } = require('path');
+const { join, dirname } = require('path');
 const { getInput } = require('@actions/core');
 const { launch } = require('puppeteer');
 
 (async () => {
     
-    const inputFile = join(cwd(), getInput('path'));
-    const outputFile = getInput('output');
-    const pdfOptions = JSON.parse(getInput('options'));
+    const inputFile = join(cwd(), getInput('path') || './cv.html');
+    const outputFile = getInput('output') || './test/path/cv.pdf';
+    const pdfOptions = JSON.parse(getInput('options') || "{}");
 
     console.log(`Input file: ${inputFile}`);
     console.log(`Output file: ${outputFile}\n`);
+
+    console.log("Making sure output directory exists");
+    const dir = dirname(outputFile);
+    await mkdir(dir, { recursive: true });
 
     console.log("Opening the browser")
     const browser = await launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
@@ -24,7 +28,7 @@ const { launch } = require('puppeteer');
     const pdf = await page.pdf(pdfOptions);
     
     console.log(`PDF is ready, writing to ${outputFile}`)
-    writeFileSync(outputFile, pdf);
+    await writeFile(outputFile, pdf);
     
     console.log("Closing the browser")
     await browser.close()
