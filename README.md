@@ -1,6 +1,6 @@
 # html2pdf
 
-Github Action to convert HTML files to PDF using [puppeteer](https://github.com/puppeteer/puppeteer).
+Github Action to convert local and remote HTML files to PDF using [puppeteer](https://github.com/puppeteer/puppeteer).
 
 Supports puppeteer [`PDFOptions`](https://github.com/puppeteer/puppeteer/blob/471e291e052686988b850995a9412c19a82de503/docs/api/puppeteer.pdfoptions.md) to configure the PDF generation.
 
@@ -24,3 +24,5 @@ jobs:
         with:
           path: ./file.pdf
 ```
+
+To fetch files served over HTTP, pass the URL as path, e.g. `http://127.0.0.1:8080/file.html`.
