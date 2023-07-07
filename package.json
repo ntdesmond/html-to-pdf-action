@@ -1,6 +1,6 @@
 {
   "name": "html2pdf-action",
-  "version": "1.2.0",
+  "version": "1.1.1",
   "description": "Github action to print HTML to PDF using puppeteer",
   "scripts": {
     "test": "jest"
