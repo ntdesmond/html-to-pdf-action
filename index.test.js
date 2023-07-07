@@ -3,6 +3,10 @@ const child_process = require("child_process");
 const path = require("path");
 const { createPdf, pathToUrl } = require(".");
 
+const INPUT_PATH = "public/file.html";
+const INPUT_OUTPUT = "public/file.pdf";
+const INPUT_OPTIONS = "{}";
+
 const script_path = path.join(__dirname, "index.js");
 const runAction = (env) => {
   const { status, stderr, stdout } = child_process.spawnSync(
@@ -19,8 +23,8 @@ const runAction = (env) => {
 };
 
 describe("createPdf", () => {
-  const outputFile = "file.pdf";
-  const pdfOptions = {};
+  const outputFile = INPUT_OUTPUT;
+  const pdfOptions = JSON.parse(INPUT_OPTIONS);
   it("fails on non-existent input path", async () => {
     await createPdf({
       inputPath: pathToUrl("not-a-file.html"),
@@ -37,7 +41,7 @@ describe("createPdf", () => {
   });
   it("succeeds on existing local files", async () => {
     await createPdf({
-      inputPath: pathToUrl("file.html"),
+      inputPath: pathToUrl(INPUT_PATH),
       outputFile,
       pdfOptions,
     });
@@ -52,9 +56,6 @@ describe("createPdf", () => {
 });
 
 describe("action", () => {
-  const INPUT_PATH = "file.html";
-  const INPUT_OUTPUT = "file.pdf";
-  const INPUT_OPTIONS = "{}";
   it('fails on missing "path"', async () => {
     const status = runAction({ INPUT_OUTPUT, INPUT_OPTIONS });
     expect(status).not.toBeNull;
