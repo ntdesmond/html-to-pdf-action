@@ -11,13 +11,13 @@ env:
   PDF_OPTIONS: |
     {"format": "A4"}
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# Read-only permissions for GITHUB_TOKEN
+permissions:
+  contents: read
 
-    # Read-only permissions for GITHUB_TOKEN
-    permissions:
-      contents: read
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -36,6 +36,10 @@ jobs:
       - name: Run tests
         run: npm test
 
+  run-action:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Run the action with PDF options
         uses: ./
         with:
