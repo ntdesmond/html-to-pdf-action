@@ -10,9 +10,8 @@ const INPUT_OPTIONS = "{}";
 const script_path = path.join(__dirname, "index.js");
 const runAction = (env) => {
   const { status, stderr, stdout } = child_process.spawnSync(
-    "node",
-    [script_path],
-    { env }
+    `node ${script_path}`,
+    { env, shell: true }
   );
   console.log(
     `Action exited with status code ${status}.\n` +
