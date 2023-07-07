@@ -50,6 +50,6 @@ jobs:
           options: ${{ env.PDF_OPTIONS }}
 
       - name: Upload resulting PDF
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           path: ./public/file.pdf
