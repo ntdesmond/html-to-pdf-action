@@ -7,14 +7,14 @@ const { getInput } = require("@actions/core");
 const { launch } = require("puppeteer");
 
 (async () => {
-  let inputPath =
-    getInput("path") || "http://host.docker.internal:4173/cv.html";
+  let inputPath = getInput("path", { required: true });
+
   if (!/^.+:\/\//.test(inputPath)) {
     inputPath = `file://${join(cwd(), inputPath)}`;
   }
 
-  const outputFile = getInput("output") || "./test/path/cv.pdf";
-  const pdfOptions = JSON.parse(getInput("options") || "{}");
+  const outputFile = getInput("output", { required: true });
+  const pdfOptions = JSON.parse(getInput("options", { required: true }));
 
   console.log(`Input path: ${inputPath}`);
   console.log(`Output file: ${outputFile}\n`);
