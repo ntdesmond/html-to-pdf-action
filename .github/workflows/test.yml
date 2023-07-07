@@ -1,0 +1,49 @@
+name: Action tests
+
+on:
+  push:
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PDF_OPTIONS: |
+    {"format": "A4"}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Read-only permissions for GITHUB_TOKEN
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start HTTP server
+        run: npx http-server & npx wait-on tcp:8080
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run the action with PDF options
+        uses: ./
+        with:
+          path: ./public/file.html
+          output: ./public/file.pdf
+          options: ${{ env.PDF_OPTIONS }}
+
+      - name: Upload resulting PDF
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public/file.pdf
