@@ -1,21 +1,27 @@
 const {
   promises: { mkdir, writeFile },
 } = require("fs");
-const { cwd } = require("process");
-const { join, dirname } = require("path");
+const { dirname } = require("path");
 const { getInput } = require("@actions/core");
 const { launch } = require("puppeteer");
+const { pathToFileURL } = require("url");
 
-(async () => {
-  let inputPath = getInput("path", { required: true });
-
-  if (!/^.+:\/\//.test(inputPath)) {
-    inputPath = `file://${join(cwd(), inputPath)}`;
+const pathToUrl = (path) => {
+  if (/^.+:\/\//.test(path)) {
+    return path;
   }
+  return pathToFileURL(path);
+};
 
+const getInputs = () => {
+  const inputPath = pathToUrl(getInput("path", { required: true }));
   const outputFile = getInput("output", { required: true });
-  const pdfOptions = JSON.parse(getInput("options", { required: true }));
+  const pdfOptions = JSON.parse(getInput("options"));
 
+  return { inputPath, outputFile, pdfOptions };
+};
+
+const createPdf = async ({ inputPath, outputFile, pdfOptions }) => {
   console.log(`Input path: ${inputPath}`);
   console.log(`Output file: ${outputFile}\n`);
 
@@ -29,16 +35,25 @@ const { launch } = require("puppeteer");
   });
   const page = await browser.newPage();
 
-  console.log(`Navigating to ${inputPath}`);
-  await page.goto(inputPath, { waitUntil: "networkidle0" });
+  try {
+    console.log(`Navigating to ${inputPath}`);
+    await page.goto(inputPath, { waitUntil: "networkidle0" });
 
-  const pdf = await page.pdf(pdfOptions);
+    const pdf = await page.pdf(pdfOptions);
 
-  console.log(`PDF is ready, writing to ${outputFile}`);
-  await writeFile(outputFile, pdf);
+    console.log(`PDF is ready, writing to ${outputFile}`);
+    await writeFile(outputFile, pdf);
+  } finally {
+    console.log("Closing the browser");
+    await browser.close();
+  }
+};
 
-  console.log("Closing the browser");
-  await browser.close();
+if (require.main === module) {
+  (async () => {
+    await createPdf(getInputs());
+    console.log("Done");
+  })();
+}
 
-  console.log("Done");
-})();
+module.exports = { pathToUrl, getInputs, createPdf };
