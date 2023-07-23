@@ -18,7 +18,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "Dockerfile"
+  image: "docker://ghcr.io/ntdesmond/html2pdf-action:latest"
 
 branding:
   icon: file-text
